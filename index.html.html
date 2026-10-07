@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelompok 10 PBTGM</title>
+
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- css sendiri -->
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            padding-top: 56px; /* biar tidak ketutup navbar */
+        }
+
+        /* supaya judul section tidak ketutup navbar pas diklik menu */
+        section {
+            scroll-margin-top: 56px;
+        }
+
+        .hero {
+            background-color: #eef3fb;
+            padding: 80px 0;
+        }
+
+        .hero h1 {
+            font-size: 40px;
+        }
+
+        .gambar-hero {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .card-img-top {
+            height: 140px;
+            object-fit: cover;
+        }
+
+        .form-daftar {
+            max-width: 750px;
+        }
+
+        footer a {
+            color: #ccc;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: #fff;
+        }
+
+        /* animasi gambar hero (naik turun terus) */
+        .gambar-hero {
+            animation: melayang 3s ease-in-out infinite;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes melayang {
+            0%   { transform: translateY(0); }
+            50%  { transform: translateY(-15px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* efek kartu ekskul */
+        #ekskul .card {
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        /* pas kartu disorot mouse, kartu naik */
+        #ekskul .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 25px rgba(13, 110, 253, 0.35);
+        }
+
+        /* gambar di kartu membesar pelan-pelan */
+        #ekskul .card-img-top {
+            transition: transform 0.4s;
+        }
+
+        #ekskul .card:hover .card-img-top {
+            transform: scale(1.1);
+        }
+
+        /* tombol pilih ekskul berubah warna */
+        #ekskul .btn-pilih {
+            transition: all 0.3s;
+        }
+
+        #ekskul .card:hover .btn-pilih {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        /* tampilan HP */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 40px 0;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .gambar-hero {
+                height: 220px;
+            }
+        }
+    
+
+
+        /* ===== TAMBAHAN DESAIN: BERWARNA TAPI TETAP SEDERHANA ===== */
+
+        body {
+            background:
+                radial-gradient(circle at 8% 15%, rgba(13, 110, 253, 0.07) 0 90px, transparent 91px),
+                radial-gradient(circle at 92% 42%, rgba(111, 66, 193, 0.06) 0 110px, transparent 111px),
+                #f8fbff;
+        }
+
+        /* Hero lebih hidup tanpa mengubah layout */
+        .hero {
+            position: relative;
+            overflow: hidden;
+            background:
+                linear-gradient(135deg, #eef6ff 0%, #f8f5ff 55%, #eefaff 100%);
+            border-bottom: 1px solid rgba(13, 110, 253, 0.08);
+        }
+
+        .hero::before,
+        .hero::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero::before {
+            width: 180px;
+            height: 180px;
+            background: rgba(13, 110, 253, 0.08);
+            top: -90px;
+            left: -70px;
+        }
+
+        .hero::after {
+            width: 150px;
+            height: 150px;
+            background: rgba(111, 66, 193, 0.07);
+            bottom: -80px;
+            right: -50px;
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            color: #172b4d;
+        }
+
+        .hero .text-primary {
+            letter-spacing: 0.4px;
+        }
+
+        /* Frame gambar hero */
+        .gambar-hero {
+            border: 5px solid rgba(255, 255, 255, 0.9);
+            outline: 2px solid rgba(13, 110, 253, 0.18);
+            box-shadow:
+                0 12px 30px rgba(13, 110, 253, 0.16),
+                0 0 0 8px rgba(13, 110, 253, 0.035);
+        }
+
+        /* Judul section */
+        #ekskul h2,
+        #daftar h2 {
+            position: relative;
+            display: inline-block;
+        }
+
+        #ekskul h2::after,
+        #daftar h2::after {
+            content: "";
+            display: block;
+            width: 48px;
+            height: 4px;
+            margin-top: 8px;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #0d6efd, #8b5cf6);
+        }
+
+        /* Area ekskul */
+        #ekskul {
+            position: relative;
+            background:
+                radial-gradient(circle at 97% 8%, rgba(13, 110, 253, 0.06) 0 80px, transparent 81px),
+                radial-gradient(circle at 3% 92%, rgba(111, 66, 193, 0.05) 0 100px, transparent 101px),
+                #ffffff;
+        }
+
+        /* Kartu tetap sama ukurannya, hanya diberi tepian lebih menarik */
+        #ekskul .card {
+            position: relative;
+            border: 1px solid rgba(13, 110, 253, 0.12);
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 5px 16px rgba(24, 58, 105, 0.09);
+        }
+
+        #ekskul .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #0d6efd, #6f42c1);
+            opacity: 0.75;
+        }
+
+        #ekskul .card-title {
+            color: #173b73;
+        }
+
+        #ekskul .card-img-top {
+            border-bottom: 1px solid rgba(13, 110, 253, 0.1);
+        }
+
+        /* Tombol lebih modern */
+        .btn-primary {
+            border: none;
+            background: linear-gradient(135deg, #0d6efd, #5b5ce2);
+            box-shadow: 0 5px 14px rgba(13, 110, 253, 0.18);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0b5ed7, #4c4dc7);
+            transform: translateY(-1px);
+        }
+
+        .btn-outline-primary:hover {
+            background: linear-gradient(135deg, #0d6efd, #5b5ce2);
+        }
+
+        /* Form */
+        #daftar {
+            position: relative;
+            overflow: hidden;
+            background:
+                linear-gradient(135deg, #f1f7ff 0%, #faf8ff 100%) !important;
+        }
+
+        #daftar::before {
+            content: "";
+            position: absolute;
+            width: 170px;
+            height: 170px;
+            border: 25px solid rgba(13, 110, 253, 0.045);
+            border-radius: 50%;
+            right: -55px;
+            top: -45px;
+        }
+
+        .form-daftar {
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(13, 110, 253, 0.13);
+            border-radius: 22px !important;
+            box-shadow: 0 10px 28px rgba(24, 58, 105, 0.08);
+            background: rgba(255, 255, 255, 0.96);
+        }
+
+        .form-control,
+        .form-select {
+            border: 1px solid #d8e3f2;
+            border-radius: 10px;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #7aaeff;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.10);
+        }
+
+        /* Navbar tetap putih, diberi garis bawah halus */
+        .navbar {
+            border-bottom: 1px solid rgba(13, 110, 253, 0.08);
+        }
+
+        .navbar-brand {
+            color: #173b73 !important;
+        }
+
+        .nav-link {
+            transition: color 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: #0d6efd !important;
+        }
+
+        /* Footer diberi aksen warna tipis */
+        footer {
+            position: relative;
+            overflow: hidden;
+            border-top: 4px solid transparent;
+            border-image: linear-gradient(90deg, #0d6efd, #6f42c1, #0dcaf0) 1;
+        }
+
+        footer h5 {
+            color: #ffffff;
+        }
+
+        /* Sedikit dekorasi pada garis pemisah footer */
+        footer hr {
+            opacity: 0.18;
+        }
+
+        @media (max-width: 768px) {
+            .gambar-hero {
+                outline: none;
+                box-shadow: 0 8px 20px rgba(13, 110, 253, 0.13);
+            }
+
+            #ekskul .card {
+                box-shadow: 0 4px 12px rgba(24, 58, 105, 0.08);
+            }
+        }
+
+
+        /* ===== POLISH TAMPILAN MODERN ===== */
+
+        /* Background halaman lebih berdimensi */
+        body {
+            background:
+                radial-gradient(circle at 10% 12%, rgba(13,110,253,.09) 0 120px, transparent 121px),
+                radial-gradient(circle at 90% 28%, rgba(111,66,193,.08) 0 150px, transparent 151px),
+                radial-gradient(circle at 15% 82%, rgba(13,202,240,.06) 0 130px, transparent 131px),
+                #f8fbff;
+        }
+
+        /* Navbar */
+        .navbar {
+            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,.94) !important;
+            box-shadow: 0 4px 18px rgba(22,48,87,.06) !important;
+        }
+
+        .navbar-brand img {
+            border-radius: 50%;
+            box-shadow: 0 3px 10px rgba(13,110,253,.18);
+        }
+
+        .navbar .btn {
+            border-radius: 999px;
+            padding-left: 18px;
+            padding-right: 18px;
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 480px;
+            display: flex;
+            align-items: center;
+            background:
+                radial-gradient(circle at 82% 25%, rgba(13,110,253,.13) 0 110px, transparent 111px),
+                radial-gradient(circle at 8% 85%, rgba(111,66,193,.10) 0 130px, transparent 131px),
+                linear-gradient(135deg,#edf6ff,#faf7ff 60%,#eefcff);
+        }
+
+        .hero h1 {
+            line-height: 1.12;
+            letter-spacing: -1px;
+            text-shadow: 0 2px 12px rgba(23,59,115,.08);
+        }
+
+        .hero .text-primary {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(13,110,253,.09);
+            border: 1px solid rgba(13,110,253,.12);
+        }
+
+        .hero .btn {
+            border-radius: 12px;
+            padding: 11px 18px;
+        }
+
+        .hero .col-md-6:first-child {
+            position: relative;
+        }
+
+        .hero .col-md-6:first-child::before {
+            content: "";
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            border: 3px solid rgba(13,110,253,.13);
+            border-radius: 18px;
+            left: -30px;
+            top: 15px;
+            transform: rotate(15deg);
+        }
+
+        .gambar-hero {
+            border-radius: 24px !important;
+            border: 6px solid rgba(255,255,255,.95);
+            outline: 1px solid rgba(13,110,253,.2);
+            box-shadow:
+                0 20px 45px rgba(24,59,115,.17),
+                0 0 0 12px rgba(13,110,253,.035);
+        }
+
+        /* SECTION EKSKUL */
+        #ekskul {
+            padding-top: 70px !important;
+            padding-bottom: 75px !important;
+        }
+
+        #ekskul > .container > h2,
+        #daftar > .container > h2 {
+            font-size: 32px;
+            letter-spacing: -.5px;
+        }
+
+        #ekskul > .container > p {
+            font-size: 16px;
+        }
+
+        /* Kartu lebih premium */
+        #ekskul .card {
+            border-radius: 20px !important;
+            border: 1px solid rgba(13,110,253,.12);
+            background: linear-gradient(180deg,#ffffff,#fbfdff);
+            box-shadow: 0 7px 20px rgba(29,65,110,.08);
+            transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+        }
+
+        #ekskul .card::before {
+            height: 5px;
+            background: linear-gradient(90deg,#0d6efd,#6f42c1,#0dcaf0);
+        }
+
+        #ekskul .card:hover {
+            transform: translateY(-9px);
+            border-color: rgba(13,110,253,.28);
+            box-shadow:
+                0 18px 35px rgba(29,65,110,.14),
+                0 0 0 4px rgba(13,110,253,.035);
+        }
+
+        #ekskul .card-img-top {
+            height: 150px;
+            border-radius: 15px 15px 0 0;
+            object-fit: cover;
+        }
+
+        #ekskul .card-body {
+            padding: 18px;
+        }
+
+        #ekskul .card-title {
+            font-weight: 700;
+            margin-bottom: 9px;
+        }
+
+        #ekskul .card-text {
+            color: #63738a;
+            line-height: 1.55;
+            font-size: 14px;
+        }
+
+        /* Efek gambar saat hover */
+        #ekskul .card:hover .card-img-top {
+            transform: scale(1.035);
+        }
+
+        /* FORM */
+        #daftar {
+            padding-top: 75px !important;
+            padding-bottom: 75px !important;
+        }
+
+        .form-daftar {
+            border-radius: 24px !important;
+            padding: 32px !important;
+            border: 1px solid rgba(13,110,253,.13);
+            box-shadow: 0 15px 35px rgba(24,59,115,.09);
+        }
+
+        .form-label {
+            color: #29466d;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-control,
+        .form-select {
+            min-height: 46px;
+            background: #fbfdff;
+        }
+
+        .form-control:hover,
+        .form-select:hover {
+            border-color: #9bbce9;
+        }
+
+        #formDaftar .btn-primary {
+            min-height: 45px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background:
+                radial-gradient(circle at 90% 0%, rgba(91,92,226,.25) 0 120px, transparent 121px),
+                linear-gradient(135deg,#101f40,#172e59) !important;
+        }
+
+        footer a {
+            transition: color .2s ease, padding-left .2s ease;
+        }
+
+        footer a:hover {
+            color: #8ec5ff !important;
+            padding-left: 3px;
+        }
+
+        /* Animasi dekorasi sangat halus */
+        @keyframes dekorasi {
+            0%,100% { transform: translateY(0); }
+            50% { transform: translateY(-7px); }
+        }
+
+        .hero::before {
+            animation: dekorasi 5s ease-in-out infinite;
+        }
+
+        /* HP */
+        @media (max-width: 768px) {
+            .hero {
+                min-height: auto;
+                padding: 60px 0 !important;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+
+            .hero .col-md-6:first-child::before {
+                display: none;
+            }
+
+            #ekskul > .container > h2,
+            #daftar > .container > h2 {
+                font-size: 27px;
+            }
+
+            .form-daftar {
+                padding: 22px !important;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg bg-white shadow-sm fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#beranda">
+                <img src="Logo.jpg" alt="logo" width="35" height="35" class="me-2">
+                SMKN TENGGARAN
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="menuNavbar">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item"><a class="nav-link" href="#beranda">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#ekskul">Ekstrakurikuler</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#kontak">kontak</a></li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-primary btn-sm" href="#daftar">Daftar Sekarang</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section id="beranda" class="hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <p class="text-primary fw-semibold mb-1">Tahun Ajaran 2026/2027</p>
+                    <h1 class="fw-bold">Kembangkan Bakat dan Minatmu Bersama Kami</h1>
+                    <p class="text-secondary my-3">
+                        Pilih kegiatan yang kamu suka, cari teman baru, dan raih prestasi di luar kelas.
+                    </p>
+                    <a href="#ekskul" class="btn btn-primary me-2">Lihat Ekstrakurikuler</a>
+                    <a href="#daftar" class="btn btn-outline-primary">Daftar Sekarang</a>
+                </div>
+                <div class="col-md-6">
+                    <!-- ganti link gambar hero -->
+                    <img src="https://smkn1tengaran.sch.id/wp-content/uploads/2023/08/smkn1tengaran-gerbang-masuk-1024x409.jpg" alt="kegiatan siswa" class="img-fluid rounded gambar-hero">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INFORMASI EKSKUL -->
+    <section id="ekskul" class="py-5">
+        <div class="container">
+            <h2 class="fw-bold">Ekstrakurikuler</h2>
+            <p class="text-secondary mb-4">Pilih yang paling cocok denganmu.</p>
+
+            <div class="row g-3">
+
+                <!-- kartu 1 -->
+                <div class="col-md-3 ">
+                    <div class="card h-100 rounded-4">
+                        <img src="Jurnalistik.jpeg" class="card-img-top" alt="basket">
+                        <div class="card-body">
+                            <h5 class="card-title">Jurnalistik</h5>
+                            <p class="card-text"> Mengajarkan cara mencari dan menyampaikan informasi. Melatih kemampuan menulis dan berkomunikasi.</p>
+                            <br> 
+                        </div>
+                    </div>
+                </div>
+
+                <!-- kartu 2 -->
+                <div class="col-md-3 ">
+                    <div class="card h-100 rounded-4">
+                        <img src="Pmr.jpeg" class="card-img-top" alt="seni tari">
+                        <div class="card-body">
+                            <h5 class="card-title">Pmr</h5>
+                            <p class="card-text">Mengajarkan dasar-dasar kesehatan dan pertolongan pertama. Melatih kepedulian dan jiwa kemanusiaan.</p><br>  
+                        </div>
+                    </div>
+                </div>
+
+                <!-- kartu 3 -->
+                <div class="col-md-3 ">
+                    <div class="card h-100 rounded-4">
+                        <img src="Paskibra.jpeg" class="card-img-top" alt="robotik">
+                        <div class="card-body">
+                            <h5 class="card-title">Paskibra</h5>
+                            <p class="card-text">Melatih kedisiplinan, ketangkasan, dan kerja sama. Mengajarkan tanggung jawab dan nasionalisme.</p><br>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- kartu 4 -->
+                <div class="col-md-3 ">
+                    <div class="card h-100 rounded-4">
+                        <img src="Pencak silat.jpeg" class="card-img-top" alt="robotik">
+                        <div class="card-body">
+                            <h5 class="card-title">Pencak silat</h5>
+                            <p class="card-text">Mengajarkan teknik bela diri dan pertahanan diri. Melatih keberanian, disiplin, dan pengendalian diri.</p><br>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- kartu 5 -->
+                <div class="col-md-3 justify-content-center" style="margin-top: 40px">
+                    <div class="card h-100 p-4 rounded-4" style="height: 390px">
+                        <img src="Tari.jpeg" class="card-img-top" alt="robotik">
+                        <div class="card-body">
+                            <h5 class="card-title">Tari</h5>
+                            <p class="card-text"> Mengajarkan berbagai gerakan tari tradisional maupun modern. Melatih kreativitas dan kepercayaan diri.</p><br>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- kartu 6 -->
+                <div class="col-md-3 justify-content-center" style="margin-top: 40px">
+                    <div class="card h-100 p-4 rounded-4" style="height: 390px">
+                        <img src="b.jepang.jpeg" class="card-img-top" alt="robotik">
+                        <div class="card-body">
+                            <h5 class="card-title">B.Jepang</h5>
+                            <p class="card-text">Mengajarkan dasar bahasa Jepang dan percakapan sederhana. Mengenalkan budaya dan kebiasaan Jepang.</p><br>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- kartu 7-->
+                <div class="col-md-3 justify-content-center" style="margin-top: 40px">
+                    <div class="card h-100 p-4 rounded-4" style="height: 390px">
+                        <img src="Bantara.jpeg" class="card-img-top" alt="robotik">
+                        <div class="card-body">
+                            <h5 class="card-title">Bantara</h5>
+                            <p class="card-text">Mengajarkan kemandirian, kedisiplinan, dan kepemimpinan. Melatih kerja sama melalui berbagai kegiatan.</p><br>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- kartu 8 -->
+                <div class="col-md-3 justify-content-center" style="margin-top: 40px">
+                    <div class="card h-100 p-4 rounded-4" style="height: 390px">
+                        <img src="Futsal.jpeg" class="card-img-top" alt="robotik">
+                        <div class="card-body">
+                            <h5 class="card-title">Futsal</h5>
+                            <p class="card-text">Melatih keterampilan bermain futsal secara tim. Mengajarkan kerja sama, strategi, dan sportivitas.</p><br>  
+                        </div>
+                    </div>
+                </div>
+
+                <!-- kartu 9 -->
+                <div class="col-md-3 justify-content-center" style="margin-top: 40px">
+                    <div class="card h-100 p-4 rounded-4" style="height: 390px">
+                        <img src="Voli.jpeg" class="card-img-top" alt="robotik">
+                        <div class="card-body">
+                            <h5 class="card-title">Volly</h5>
+                            <p class="card-text"> Melatih kemampuan bermain bola voli secara berkelompok. Mengajarkan kerja sama dan sportivitas.</p><br>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- kartu 10 -->
+                <div class="col-md-3 justify-content-center" style="margin-top: 40px">
+                    <div class="card h-100 p-4 rounded-4" style="height: 390px">
+                        <img src="Drumband.jpeg" class="card-img-top" alt="robotik">
+                        <div class="card-body">
+                            <h5 class="card-title">Drumband</h5>
+                            <p class="card-text"> Menggabungkan permainan alat musik dengan gerakan yang teratur. Melatih kekompakan, konsentrasi, dan disiplin.</p><br>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- kartu 11 -->
+                <div class="col-md-3 justify-content-center" style="margin-top: 40px">
+                    <div class="card h-100 p-4 rounded-4" style="height: 390px">
+                        <img src="Rebana.jpeg" class="card-img-top" alt="robotik">
+                        <div class="card-body">
+                            <h5 class="card-title">Robbana</h5>
+                            <p class="card-text">Mengajarkan bermain alat musik rebana dan lagu Islami. Melatih kekompakan dan kreativitas.</p><br>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- kartu 12 -->
+                <div class="col-md-3 justify-content-center" style="margin-top: 40px">
+                    <div class="card h-100 p-4 rounded-4" style="height: 390px">
+                        <img src="Rohis.jpeg" class="card-img-top" alt="robotik">
+                        <div class="card-body">
+                            <h5 class="card-title">Rohis</h5>
+                            <p class="card-text">Berisi kegiatan keagamaan dan pembentukan karakter. Mengajarkan nilai-nilai Islam dalam kehidupan sehari-hari.</p><br>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                
+                <div class="row g-3 justify-content-center">
+                <!-- kartu 13 -->
+                <div class="col-md-3 justify-content-center " style="margin-top: 40px">
+                    <div class="card h-100 p-4 rounded-4" style="height: 390px">
+                        <img src="Faster.jpeg" class="card-img-top" alt="robotik">
+                        <div class="card-body">
+                            <h5 class="card-title">Faster</h5>
+                            <p class="card-text">Mengajarkan pentingnya mematuhi peraturan lalu lintas. Meningkatkan kesadaran akan keselamatan di jalan.</p><br>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- kartu 14 -->
+                <div class="col-md-3 justify-content-center " style="margin-top: 40px">
+                    <div class="card h-100 p-4 rounded-4" style="height: 390px">
+                        <img src="Padus.jpg" class="card-img-top" alt="robotik">
+                        <div class="card-body">
+                            <h5 class="card-title">Padus</h5>
+                            <p class="card-text">Mengajarkan teknik bernyanyi secara berkelompok dan harmonis. Melatih kekompakan, percaya diri, serta kemampuan mengolah suara.</p><br>                        
+                      </div>
+                    </div>
+                </div>
+                </div>
+   
+            </div>
+        </div>
+    </section>
+
+    <!-- FORM PENDAFTARAN -->
+    <section id="daftar" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="fw-bold">Form Pendaftaran</h2>
+            <p class="text-secondary mb-4">Pendaftaran dibuka sampai 31 Oktober 2026.</p>
+
+            <div class="card p-4 form-daftar mx-auto" style="max-width: 900px;">
+                <form id="formDaftar">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="nama" class="form-label">Nama Lengkap</label>
+                            <input type="text" class="form-control" id="nama" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="kelas" class="form-label">Kelas</label>
+                            <input type="text" class="form-control" id="kelas" placeholder="contoh: X RPL 1" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="nis" class="form-label">NIS</label>
+                            <input type="text" class="form-control" id="nis" placeholder="Contoh: 12345A" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="hp" class="form-label">No. WhatsApp</label>
+                            <input type="tel" class="form-control" id="hp" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="pilihan" class="form-label">Pilihan Ekstrakurikuler</label>
+                            <select class="form-select" id="pilihan" required>
+                                <option value="">-- Pilih Ekskul --</option>
+                                <option value="Basket">Jurnalistik</option>
+                                <option value="Seni Tari">Pmr</option>
+                                <option value="Robotik">Paskibra</option>
+                                <option value="Basket">Pencak silat</option>
+                                <option value="Seni Tari">Nari</option>
+                                <option value="Robotik">B.Jepang</option>
+                                <option value="Basket">Bantara</option>
+                                <option value="Seni Tari">Futsal</option>
+                                <option value="Robotik">Volly</option>
+                                <option value="Basket">Drumband</option>
+                                <option value="Seni Tari">Robbana</option>
+                                <option value="Robotik">Rohis</option>
+                                <option value="Seni Tari">Faster</option>
+                                <option value="Robotik">Padus</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label for="alasan" class="form-label">Alasan Mengikuti</label>
+                            <textarea class="form-control" id="alasan" rows="3"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="izin" required>
+                                <label class="form-check-label" for="izin">
+                                    Saya sudah mendapat izin orang tua/wali
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">Kirim Pendaftaran</button>
+                        </div>
+                    </div>
+                </form>
+                <div id="pesan" class="mt-3"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="kontak" class="bg-dark text-white pt-5 pb-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5 mb-3">
+                    <h5>SMKN TENGGARAN</h5>
+                    <p class="small">Temukan minatmu, kembangkan bakatmu, dan raih pengalaman 
+                        <br>baru bersama ekstrakurikuler pilihanmu.
+                    </p>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h5>Menu</h5>
+                    <ul class="list-unstyled small">
+                        <li><a href="#beranda">Beranda</a></li>
+                        <li><a href="#ekskul">Ekstrakurikuler</a></li>
+                        <li><a href="#daftar">Daftar</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Kontak</h5>
+                    <p class="small mb-1">Email: smkntengaran@yahoo.co.id</p>
+                    <p class="small mb-1">Telp: 0298-3405-144</p>
+                    <p class="small mb-1">Alamat: Jl. Darun Naim Karangduren Tengaran </p>
+                    <p class="small">
+                        <a href="https://www.instagram.com/smkn1tengaran_bisa?utm_source=ig_web_button_share_sheet&stkn=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a> |
+                        <a href="https://www.tiktok.com/@smkn1tengaran?is_from_webapp=1&sender_device=pc" target="_blank">Tiktok</a>
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <p class="text-center small mb-0">&copy; 2026 SMKN TENGGARAN</p>
+        </div>
+    </footer>
+
+    <!-- bootstrap js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- js sendiri -->
+    <script>
+        // ambil elemen yang dibutuhkan
+        var form = document.getElementById("formDaftar");
+        var pesan = document.getElementById("pesan");
+        var pilihan = document.getElementById("pilihan");
+        var tombolPilih = document.querySelectorAll(".btn-pilih");
+
+        // kalau tombol "Pilih Ekskul" diklik, dropdown di form langsung terisi
+        for (var i = 0; i < tombolPilih.length; i++) {
+            tombolPilih[i].addEventListener("click", function () {
+                pilihan.value = this.getAttribute("data-nama");
+            });
+        }
+
+        // pas form dikirim
+        form.addEventListener("submit", function (e) {
+            e.preventDefault(); // biar halaman tidak reload
+
+            var nama = document.getElementById("nama").value;
+            var kelas = document.getElementById("kelas").value;
+            var nis = document.getElementById("nis").value;
+            var hp = document.getElementById("hp").value;
+            var email = document.getElementById("email").value;
+            var ekskul = pilihan.value;
+            var alasan = document.getElementById("alasan").value;
+
+            // cek nomor hp minimal 10 angka
+            if (hp.length < 10) {
+                pesan.innerHTML = '<div class="alert alert-danger">Nomor WhatsApp tidak valid.</div>';
+                return;
+            }
+
+            // data pendaftar dimasukkan ke object
+            var data = {
+                nama: nama,
+                kelas: kelas,
+                nis: nis,
+                hp: hp,
+                email: email,
+                ekskul: ekskul,
+                alasan: alasan
+            };
+
+            // sementara data cuma ditampilkan di console
+            // kalau mau disimpan beneran, kirim ke Google Sheets / database / formspree
+            console.log(data);
+
+            pesan.innerHTML = '<div class="alert alert-success">Terima kasih ' + nama + ', pendaftaran ' + ekskul + ' berhasil dikirim.</div>';
+            form.reset();
+        });
+    
+       
+
+</script>
+</body>
+</html>
